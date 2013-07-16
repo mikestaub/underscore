@@ -1,7 +1,6 @@
-//     Underscore.js 1.5.0
+//     Underscore.js 1.5.1
 //     http://underscorejs.org
-//     (c) 2009-2011 Jeremy Ashkenas, DocumentCloud Inc.
-//     (c) 2011-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+//     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //     Underscore may be freely distributed under the MIT license.
 
 (function() {
@@ -66,7 +65,7 @@
   }
 
   // Current version.
-  _.VERSION = '1.5.0';
+  _.VERSION = '1.5.1';
 
   // Collection Functions
   // --------------------
@@ -495,16 +494,6 @@
   // Zip together multiple lists into a single array -- elements that share
   // an index go together.
   _.zip = function() {
-    return _.unzip.apply(_, slice.call(arguments));
-  };
-
-  // The inverse operation to `_.zip`. If given an array of pairs it
-  // returns an array of the paired elements split into two left and
-  // right element arrays, if given an array of triples it returns a
-  // three element array and so on. For example, `_.unzip` given
-  // `[['a',1],['b',2],['c',3]]` returns the array
-  // [['a','b','c'],[1,2,3]].
-  _.unzip = function() {
     var length = _.max(_.pluck(arguments, "length").concat(0));
     var results = new Array(length);
     for (var i = 0; i < length; i++) {
@@ -662,7 +651,7 @@
     var previous = 0;
     options || (options = {});
     var later = function() {
-      previous = new Date;
+      previous = options.leading === false ? 0 : new Date;
       timeout = null;
       result = func.apply(context, args);
     };
@@ -1064,8 +1053,7 @@
       '<': '&lt;',
       '>': '&gt;',
       '"': '&quot;',
-      "'": '&#x27;',
-      '/': '&#x2F;'
+      "'": '&#x27;'
     }
   };
   entityMap.unescape = _.invert(entityMap.escape);
@@ -1096,7 +1084,7 @@
 
   // Add your own custom functions to the Underscore object.
   _.mixin = function(obj) {
-    each(_.functions(obj), function(name){
+    each(_.functions(obj), function(name) {
       var func = _[name] = obj[name];
       _.prototype[name] = function() {
         var args = [this._wrapped];
